@@ -1,7 +1,6 @@
 # compiled output
 ..//.idea
 /dist
-../customer/dist
 /node_modules
 /build
 
