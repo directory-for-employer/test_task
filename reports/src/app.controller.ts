@@ -1,17 +1,18 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CreateAppDto } from './dto/createApp.dto';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('/create-excel')
-  create_excel_data() {
-    return this.appService.create_excel_data();
+  create_excel_data(dto: CreateAppDto) {
+    return this.appService.create_excel_data(dto);
   }
 
-  @Get('/return-excel')
-  take_excel_data() {
-    return this.appService.take_excel_data();
+  @Get('/return-excel/:id')
+  take_excel_data(@Param('id') id: number) {
+    return this.appService.take_excel_data(+id);
   }
 }
