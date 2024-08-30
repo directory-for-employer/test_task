@@ -1,12 +1,17 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  @Post('/create-excel')
+  create_excel_data() {
+    return this.appService.create_excel_data();
+  }
+
+  @Get('/return-excel')
+  take_excel_data() {
+    return this.appService.take_excel_data();
   }
 }
