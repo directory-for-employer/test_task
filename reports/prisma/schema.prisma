@@ -8,7 +8,8 @@ datasource db {
 }
 
 model data_customer {
-  id      Int     @id @default(autoincrement())
-  title   String
-  content String?
+  id         Int     @id @default(autoincrement())
+  title      String?
+  tableTitle String?
+  content    String?
 }

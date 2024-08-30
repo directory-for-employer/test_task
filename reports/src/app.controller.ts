@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { AppService } from './app.service';
 import { CreateAppDto } from './dto/createApp.dto';
 
@@ -7,7 +7,7 @@ export class AppController {
   constructor(private readonly appService: AppService) {}
 
   @Post('/create-excel')
-  create_excel_data(dto: CreateAppDto) {
+  create_excel_data(@Body() dto: CreateAppDto) {
     return this.appService.create_excel_data(dto);
   }
 
