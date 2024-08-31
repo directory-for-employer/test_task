@@ -1,4 +1,4 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express } from 'express';
 import dotenv from 'dotenv';
 import bodyParser from 'body-parser';
 
@@ -6,43 +6,36 @@ dotenv.config();
 
 const app: Express = express();
 
-
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-
 const port = process.env.PORT || 3000;
 
-app.get("/", (req: Request, res: Response) => {
-    res.send("Express + TypeScript Server");
-});
 
-app.post("/create-excel", async (req, res) => {
-    let table_data = {
-      title: "первое название",
-      content: "какое-то содержание поста"
-    }
-
-    let data = await fetch(`http://localhost:3001/create-excel`, {
-        method: 'POST',
+app.post("/create-excel",  async (req, res) => {
+   const data = await fetch(`http://localhost:3001/create-excel`, {
+        method: 'Post',
         headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+          'Content-Type': 'application/json;charset=utf-8'
         },
-        body: JSON.stringify(table_data)
+        body: JSON.stringify(req.body)
     })
+   const result = await data.json()
+   return res.json(result)
 });
+
+
 
 app.get("/return-excel/:id", async (req, res) => {
-    let data = await fetch(`http://localhost:3001/return-excel/${req.params.id}`,
-      {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json;charset=utf-8'
+    const data =  await fetch(`http://localhost:3001/return-excel/:id`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          'Content-Disposition': `attachment; filename= 1.xlsx`
         },
-      }
-    )
-    console.log(data)
+      })
+    const result = await data.json()
+    return res.json(result)
 });
-
 
 app.listen(port, () => {
     console.log(`[server]: Server is running at http://localhost:${port}`);

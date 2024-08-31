@@ -13,41 +13,46 @@ interface ITableData {
 @Injectable()
 export class AppService {
   constructor(private readonly prisma: PrismaService) {}
+
   async create_excel_data(dto: CreateAppDto) {
-    console.log(dto);
-    //   return link + id
     const tableData: ITableData[] = [
       { title: `${dto.title}`, content: `${dto.content}` },
     ];
-
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet(`${dto.tableTitle}`);
-
     worksheet.columns = [
       { key: 'title', header: 'Title' },
       { key: 'content', header: 'Content' },
     ];
 
+    // Take data on the list
     tableData.forEach((item) => {
       worksheet.addRow(item);
     });
 
-    const data_id = await this.prisma.data_customer.create({ data: {} });
+    //Add data into DataBase
+    const data_id = await this.prisma.data_customer.create({
+      data: {
+        title: dto.title,
+        tableTitle: dto.tableTitle,
+        content: dto.content,
+      },
+    });
     const { id } = data_id;
+
+    // Save data on file
     const exportPath = path.join(
       __dirname,
       '../..',
-      '/excel_table',
+      '/public',
       `${dto.tableTitle}_${id}.xlsx`,
     );
-    await workbook.xlsx.writeFile(exportPath);
 
-    // return dto;
+    await workbook.xlsx.writeFile(exportPath);
+    return { id: id, url: `/uploads/${dto.tableTitle}_${id}.xlsx` };
   }
 
-  async take_excel_data(id: number) {
-    // return excel by id
-
-    return id;
+  async take_data(id: number) {
+    return this.prisma.data_customer.findFirst({ where: { id } });
   }
 }
