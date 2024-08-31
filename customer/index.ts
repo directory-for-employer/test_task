@@ -10,7 +10,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 const port = process.env.PORT || 3000;
 
-
+// This route need for generate excel and take link and id table on DataBase
 app.post("/create-excel",  async (req, res) => {
    const data = await fetch(`http://localhost:3001/create-excel`, {
         method: 'Post',
@@ -23,8 +23,7 @@ app.post("/create-excel",  async (req, res) => {
    return res.json(result)
 });
 
-
-
+// This route need for take data on database by id
 app.get("/return-excel/:id", async (req, res) => {
     const data =  await fetch(`http://localhost:3001/return-excel/:id`, {
         method: 'GET',

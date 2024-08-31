@@ -5,6 +5,7 @@ import * as Excel from 'exceljs';
 import * as path from 'path';
 import { PrismaService } from '../prisma-client/prisma.service';
 
+// Create interface
 interface ITableData {
   title: string;
   content: string;
@@ -18,8 +19,10 @@ export class AppService {
     const tableData: ITableData[] = [
       { title: `${dto.title}`, content: `${dto.content}` },
     ];
+
     const workbook = new Excel.Workbook();
     const worksheet = workbook.addWorksheet(`${dto.tableTitle}`);
+
     worksheet.columns = [
       { key: 'title', header: 'Title' },
       { key: 'content', header: 'Content' },
